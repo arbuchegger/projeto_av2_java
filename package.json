@@ -4,8 +4,8 @@
   "private": true,
   "description": "Experiências de pilotagem no Autódromo Internacional da Paraíba",
   "scripts": {
-    "start": "node server.js",
-    "test": "node --test tests/*.test.js",
+    "start": "node tools/java.cjs",
+    "test": "node tools/java.cjs --test",
     "test:e2e": "playwright test"
   },
   "engines": {
