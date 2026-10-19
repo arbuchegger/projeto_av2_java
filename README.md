@@ -4,7 +4,33 @@ Site de aluguel de carros de pista idealizado para o Autódromo Internacional da
 
 A implementação usa apenas **Java 21**, sem Spring, Maven, banco de dados separado ou bibliotecas externas no servidor. É uma versão simples para estudar e apresentar: os dados são gravados em arquivo, e as regras ficam em classes Java pequenas.
 
-## Como abrir
+## Abrir com dois cliques (mais fácil)
+
+1. No GitHub, use **Code → Download ZIP** e extraia a pasta inteira.
+2. No Windows, dê dois cliques em **ABRIR-SITE.bat**. No macOS, use **ABRIR-SITE.command** (o sistema pode exigir permissão de execução).
+3. O Java inicia o site e tenta abrir o navegador automaticamente. Mantenha a janela aberta. Se o navegador não abrir, digite `http://localhost:3000`.
+
+Essa opção usa `dist/RancingExperience.jar`, que já contém **todas as páginas dos carros, imagens, estilos e o servidor Java**. Precisa apenas de **Java 21 ou superior**, sem Node.js nem compilação. Encerre a versão antiga antes de iniciar uma versão atualizada. Ao abrir novamente, o lançador reutiliza o site já iniciado pela versão atual nessa porta.
+
+Também é possível baixar apenas [RancingExperience.jar](dist/RancingExperience.jar) pelo botão de download do GitHub, salvar em uma pasta e abri-lo com Java. Se a associação de arquivos `.jar` estiver configurada no computador, dois cliques o iniciam. Como alternativa: `java -jar RancingExperience.jar`.
+
+O JAR isolado salva as reservas em uma pasta `data` ao lado dele. Os lançadores `ABRIR-SITE` do projeto completo usam a pasta `data` na raiz do projeto, preservando a localização da versão anterior. Se mover o JAR para outra pasta, leve também os dados que deseja manter. `DATA_DIR` permite escolher explicitamente a pasta de dados. O navegador guarda as chaves das reservas por endereço/porta: mantenha o mesmo endereço para reencontrá-las.
+
+Links e recursos agora usam a pasta de instalação como base, evitando a perda da pasta ao navegar para um carro. O funcionamento completo ainda exige o Java; abrir o HTML diretamente ou usar um servidor exclusivamente estático não inicia a API.
+
+## Onde o Java entra no site?
+
+O navegador cuida da aparência com HTML, CSS e JavaScript. **O Java é o servidor**, responsável por:
+
+- Entregar a página inicial, as quatro páginas dos carros, imagens e estilos.
+- Fornecer os carros, dados técnicos e preços de `Carro.java`.
+- Receber o formulário de reserva e calcular o preço de verdade no servidor.
+- Rejeitar horários inválidos e reservas sobrepostas para o mesmo carro.
+- Gravar as reservas em arquivo, consultá-las depois de reiniciar e cancelá-las.
+
+Exemplo: selecionar Golf GTI por duas horas exibe uma estimativa no navegador. Ao registrar, o Java recebe `POST /api/reservas`, confere o período, calcula R$ 1.380 e grava o registro. Alterar o preço no navegador não altera esse cálculo. As classes e seus papéis estão detalhados abaixo.
+
+## Executar pelos fontes (desenvolvimento)
 
 Instale o **JDK 21 ou superior** (o JRE sozinho não inclui o compilador). Abra um terminal na pasta do projeto.
 
@@ -124,9 +150,21 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-São **6 testes de navegador**: catálogo e páginas; criação/consulta/cancelamento; conflito entre dois visitantes; validação do formulário; celular e foco por teclado; e erro de conexão sem falsa confirmação. O Playwright inicia seu próprio servidor **Java** na porta `3108`, com dados isolados em `.e2e-data/`. Essa pasta é apagada antes da suíte; nunca coloque reservas reais nela.
+São **8 testes de navegador**: catálogo e páginas; criação/consulta/cancelamento; conflito entre dois visitantes; validação do formulário; celular e foco por teclado; erro de conexão sem falsa confirmação; cliques e atualização nas quatro páginas; e navegação por subpasta. O Playwright inicia seu próprio servidor **Java** na porta `3108`, com dados isolados em `.e2e-data/`. Essa pasta é apagada antes da suíte; nunca coloque reservas reais nela.
 
 Os scripts `.bat` são fornecidos para Windows; nesta implementação, a execução foi validada no Linux com JDK 21 e Chromium.
+
+## Gerar o arquivo JAR atualizado
+
+Depois de alterar o código, gere uma nova cópia do pacote com JDK 21:
+
+```sh
+bash package.sh
+```
+
+No Windows: `.\package.bat`. O resultado é `dist/RancingExperience.jar`; ele deve ser atualizado junto com os fontes. Reservas e chaves de acesso não entram no pacote.
+
+Com Node.js, `npm run test:jar` verifica o JAR sozinho em uma pasta temporária, sem os arquivos do projeto, incluindo as quatro páginas dos carros e uma reserva recuperada após reiniciar o processo. A abertura gráfica automática depende de um ambiente com navegador; os testes foram executados em Linux sem interface gráfica.
 
 ## Frota e identidade
 

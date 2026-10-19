@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node tools/java.cjs",
     "test": "node tools/java.cjs --test",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:jar": "node --test tests/jar.test.cjs"
   },
   "engines": {
     "node": ">=18"

@@ -1,6 +1,12 @@
+// Resolve links a partir da pasta real do script, inclusive em subpastas.
+const siteBase = new URL('.', document.currentScript.src);
+const siteUrl = path => new URL(path.replace(/^\//, ''), siteBase).href;
+function localLinks(html) {
+  return html.replace(/(href|src)="\/([^"]*)"/g, (_, attribute, path) => `${attribute}="${siteUrl(path)}"`);
+}
 async function api(path, options = {}) {
   let response;
-  try { response = await fetch(path, options); }
+  try { response = await fetch(siteUrl(path), options); }
   catch { throw new Error('Não foi possível conectar ao servidor Java. Verifique a conexão e tente novamente.'); }
   let result;
   try {result = await response.json();}
@@ -17,7 +23,7 @@ const cars = [
 ];
 const money = value => value.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});
 const arrow = '<span aria-hidden="true">↗</span>';
-function icons(html){return html.replaceAll('↗','<svg class="arrow-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 19 19 5M5 5h14v14"/></svg>');}
+function icons(html){return localLinks(html).replaceAll('↗','<svg class="arrow-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 19 19 5M5 5h14v14"/></svg>');}
 const logo = '<img src="/assets/logo.svg" alt="Rancing Experience" width="225" height="44">';
 const header = `<header class="header"><a href="/" class="logo" aria-label="Rancing Experience, início">${logo}</a><nav id="main-nav" aria-label="Navegação principal"><a href="/#frota">Os carros</a><a href="/#experiencia">A experiência</a><a href="/#como-funciona">Como funciona</a><a href="/#faq">Dúvidas</a></nav><button class="button small nav-cta" data-book>Quero pilotar ${arrow}</button><button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-nav">☰</button></header>`;
 const footer = `<footer><div class="footer-main"><a class="logo" href="/">${logo}</a><p>Mais do que dirigir.<br>Uma história para contar.</p><a class="text-link" href="/#frota">Encontre sua próxima emoção ${arrow}</a></div><div class="footer-bottom"><span>© ${new Date().getFullYear()} Rancing Experience</span><span>Projeto demonstrativo · Sem vínculo oficial com o autódromo ou as marcas.</span><button class="plain" data-saved>Minhas reservas</button></div></footer>`;
@@ -33,10 +39,10 @@ try {
     Object.assign(car,data);
   }
 } catch {
-  document.getElementById('app').innerHTML='<main class="section"><h1>Não foi possível carregar o site.</h1><p>Inicie o servidor Java e atualize esta página.</p><a class="button" href="/">Tentar novamente</a></main>';
+  document.getElementById('app').innerHTML=localLinks('<main class="section"><h1>Abra o site pelo Java.</h1><p>Use o arquivo RancingExperience.jar ou ABRIR-SITE.bat. Ele inicia o site e abre seu navegador. Abrir index.html ou usar apenas um servidor de arquivos não inicia as reservas.</p><a class="button" href="/">Tentar novamente</a></main>');
   return;
 }
-const selected = cars.find(c=>location.pathname===`/carros/${c.id}.html`);
+const selected = cars.find(c=>location.pathname===new URL(`carros/${c.id}.html`,siteBase).pathname);
 document.getElementById('app').innerHTML=icons(selected?detail(selected):home());
 let lastFocus;
 function closeModal(){document.getElementById('modal-root').innerHTML='';document.body.classList.remove('modal-open');lastFocus?.focus();}

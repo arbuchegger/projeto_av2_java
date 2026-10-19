@@ -54,3 +54,26 @@ test('indisponibilidade do Java é exibida sem registrar reserva local falsa',as
  await page.goto('/');await page.locator('.nav-cta').click();await fillBooking(page,{date:futureDate(9)});
  await page.route('**/api/reservas',route=>route.abort());await page.getByRole('button',{name:'Registrar minha reserva'}).click();await expect(page.locator('#form-error')).toContainText('servidor Java');expect(await page.evaluate(()=>localStorage.getItem('rancing-reservations'))).toBeNull();
 });
+
+
+test('links dos quatro carros funcionam por clique e após atualizar',async({page})=>{
+ for(const [slug,name] of [['golf-gti','Golf GTI'],['porsche-gt4-rs','Porsche GT4 RS'],['sandero-rs','Sandero RS'],['gr-yaris','GR Yaris']]){
+  await page.goto('/');await page.locator(`#car-grid a[href$="/carros/${slug}.html"]`).first().click();
+  await expect(page.locator('h1')).toHaveText(name);await page.reload();await expect(page.locator('h1')).toHaveText(name);
+  await page.locator('.breadcrumb a').first().click();await expect(page.locator('.car-card')).toHaveCount(4);
+ }
+});
+
+test('páginas e links mantêm a pasta base em acesso por subpasta',async({page})=>{
+ const paths=[];
+ page.on('request',request=>paths.push(new URL(request.url()).pathname));
+ await page.route('**/demo/**',async route=>{
+  const original=new URL(route.request().url());original.pathname=original.pathname.replace(/^\/demo/,'');
+  const response=await route.fetch({url:original.href});await route.fulfill({response});
+ });
+ await page.goto('/demo/');await expect(page.locator('.car-card')).toHaveCount(4);
+ await page.locator('#car-grid a[href$="/carros/gr-yaris.html"]').first().click();await expect(page.locator('h1')).toHaveText('GR Yaris');
+ expect(new URL(page.url()).pathname).toBe('/demo/carros/gr-yaris.html');
+ await page.locator('.breadcrumb a').first().click();await expect(page.locator('.car-card')).toHaveCount(4);
+ expect(paths.every(path=>path.startsWith('/demo/'))).toBe(true);
+});
