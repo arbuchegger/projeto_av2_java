@@ -27,9 +27,10 @@ test('JAR sozinho entrega carros, grava reservas e recupera dados após reiníci
   const jar=path.join(directory,'RancingExperience.jar');await fs.copyFile(path.join(__dirname,'..','dist','RancingExperience.jar'),jar);
   const other=path.join(directory,'pasta-sem-site');await fs.mkdir(other);
   running=await launch(jar,other);
-  for(const route of ['/','/carros/golf-gti.html','/carros/porsche-gt4-rs.html','/carros/sandero-rs.html','/carros/gr-yaris.html','/app.js','/style.css','/assets/golf-gti.png','/assets/fonts/DMSans.ttf','/api/carros']){
+  for(const route of ['/','/carros/golf-gti.html','/carros/porsche-gt4-rs.html','/carros/sandero-rs.html','/carros/gr-yaris.html','/app.js','/style.css','/assets/golf-gti.png','/assets/fonts/DMSans.ttf','/assets/fonts/Anton-Regular.ttf','/api/carros']){
    const response=await fetch(running.address+route);assert.equal(response.status,200,route);assert.ok((await response.arrayBuffer()).byteLength>50);
   }
+  assert.match(await (await fetch(running.address+'/style.css')).text(),/font-family:'Anton'/);
   assert.equal((await fetch(running.address+'/data/reservas.properties')).status,404);
   const date=new Date();date.setDate(date.getDate()+7);
   const form=new URLSearchParams({car:'golf-gti',name:'Teste do JAR',date:date.toISOString().slice(0,10),time:'09:00',hours:'2',accepted:'true'});

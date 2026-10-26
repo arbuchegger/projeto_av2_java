@@ -1,5 +1,10 @@
 @echo off
 setlocal
+title RANCING EXPERIENCE - Tipografia Anton
+echo RANCING EXPERIENCE - versao com fontes Anton, Barlow Condensed e DM Sans
+echo Se uma versao antiga estiver aberta, encerre sua janela antes de continuar.
+echo Apos abrir o site, use Ctrl+F5 se o navegador ainda mostrar o visual anterior.
+echo.
 cd /d "%~dp0"
 if defined JAVA_HOME set "PATH=%JAVA_HOME%\bin;%PATH%"
 where java >nul 2>nul
