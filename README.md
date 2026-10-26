@@ -188,3 +188,9 @@ Agora o site depende do servidor Java: **GitHub Pages ou abrir index.html direta
 ## Publicar no Netlify
 
 Arraste a pasta `hospedagem-netlify` para https://app.netlify.com/drop. Ela contém a versão estática completa e instruções em `LEIA-ME.txt`. Ao conectar este repositório, o `netlify.toml` da raiz define a pasta de publicação, sem build. As páginas e o catálogo funcionam; reservas e disponibilidade precisam do servidor Java em outra hospedagem. A pasta é uma cópia de publicação e precisa ser atualizada quando o site mudar.
+
+## Tipografia e referência visual
+
+Os títulos foram atualizados com **Anton**, fonte livre de desenho alto, estreito e em caixa alta, seguindo o estilo observado nas capturas do site Lamborghini. Navegação e botões usam **Barlow Condensed**; os textos corridos mantêm **DM Sans** para leitura confortável. Não é uma reprodução de uma fonte proprietária da Lamborghini: o site de referência recusou o acesso automatizado (HTTP 403), portanto a comparação foi visual, a partir das capturas fornecidas.
+
+Anton é distribuída localmente com sua licença SIL em `assets/fonts/Anton-LICENSE.txt`. A alteração também está na pasta Netlify e no JAR. Superpower e Impeccable não estavam disponíveis nesta sessão e não foram utilizados.
