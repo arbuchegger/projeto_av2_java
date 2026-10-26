@@ -150,7 +150,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-São **8 testes de navegador**: catálogo e páginas; criação/consulta/cancelamento; conflito entre dois visitantes; validação do formulário; celular e foco por teclado; erro de conexão sem falsa confirmação; cliques e atualização nas quatro páginas; e navegação por subpasta. O Playwright inicia seu próprio servidor **Java** na porta `3108`, com dados isolados em `.e2e-data/`. Essa pasta é apagada antes da suíte; nunca coloque reservas reais nela.
+São **9 testes de navegador**: catálogo e páginas; criação/consulta/cancelamento; conflito entre dois visitantes; validação do formulário; celular e foco por teclado; erro de conexão sem falsa confirmação; cliques e atualização nas quatro páginas; e navegação por subpasta. O Playwright inicia seu próprio servidor **Java** na porta `3108`, com dados isolados em `.e2e-data/`. Essa pasta é apagada antes da suíte; nunca coloque reservas reais nela.
 
 Os scripts `.bat` são fornecidos para Windows; nesta implementação, a execução foi validada no Linux com JDK 21 e Chromium.
 
@@ -194,3 +194,9 @@ Arraste a pasta `hospedagem-netlify` para https://app.netlify.com/drop. Ela cont
 Os títulos foram atualizados com **Anton**, fonte livre de desenho alto, estreito e em caixa alta, seguindo o estilo observado nas capturas do site Lamborghini. Navegação e botões usam **Barlow Condensed**; os textos corridos mantêm **DM Sans** para leitura confortável. Não é uma reprodução de uma fonte proprietária da Lamborghini: o site de referência recusou o acesso automatizado (HTTP 403), portanto a comparação foi visual, a partir das capturas fornecidas.
 
 Anton é distribuída localmente com sua licença SIL em `assets/fonts/Anton-LICENSE.txt`. A alteração também está na pasta Netlify e no JAR. Superpower e Impeccable não estavam disponíveis nesta sessão e não foram utilizados.
+
+## Carrossel e apresentação
+
+A página inicial abre com banner de altura de tela (`100svh`), cabeçalho transparente sobre o banner e fundo carvão após sair dele. O carrossel de quatro modelos tem setas, abas, teclas de direção/Home/End e gesto horizontal no celular, sem avanço automático. As identificações dos carros são composições tipográficas locais, não logotipos oficiais. As fontes Anton, Barlow Condensed e DM Sans foram mantidas, com paleta carvão, branco quente e bronze. A sequência é banner, carrossel, experiência, catálogo comparativo, etapas e dúvidas.
+
+O HTML fornecido da referência serviu para observar a estrutura; a implementação é independente de Swiper e dos componentes privados da Lamborghini. Impeccable e Superpowers não estavam disponíveis nesta sessão.

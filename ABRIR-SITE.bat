@@ -1,7 +1,7 @@
 @echo off
 setlocal
-title RANCING EXPERIENCE - Tipografia Anton
-echo RANCING EXPERIENCE - versao com fontes Anton, Barlow Condensed e DM Sans
+title RANCING EXPERIENCE - Carrossel e banner integral
+echo RANCING EXPERIENCE - versao com carrossel de modelos, banner integral e fontes Anton
 echo Se uma versao antiga estiver aberta, encerre sua janela antes de continuar.
 echo Apos abrir o site, use Ctrl+F5 se o navegador ainda mostrar o visual anterior.
 echo.

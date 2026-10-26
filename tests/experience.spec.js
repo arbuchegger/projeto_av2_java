@@ -77,3 +77,21 @@ test('páginas e links mantêm a pasta base em acesso por subpasta',async({page}
  await page.locator('.breadcrumb a').first().click();await expect(page.locator('.car-card')).toHaveCount(4);
  expect(paths.every(path=>path.startsWith('/demo/'))).toBe(true);
 });
+
+test('carrossel, banner integral e cabeçalho em desktop, tablet e celular',async({page})=>{
+ for(const width of [1440,768,390]){
+  await page.setViewportSize({width,height:900});await page.goto('/');await expect(page.locator('#model-stage h2')).toContainText('três letras');
+  expect(await page.locator('.hero').evaluate(el=>Math.abs(el.getBoundingClientRect().height-innerHeight)<2)).toBe(true);
+  await expect(page.locator('.header')).toHaveClass(/is-over-hero/);
+  await page.locator('#model-next').click();await expect(page.locator('#model-stage .model-wordmark')).toHaveAttribute('alt','Porsche GT4 RS');
+  await page.locator('#modelos').evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));
+  await expect(page.locator('.header')).not.toHaveClass(/is-over-hero/);
+  await page.locator('[data-model="2"]').click();await expect(page.locator('#model-explore')).toHaveAttribute('href',/sandero-rs.html$/);
+  await page.locator('[data-model="2"]').press('ArrowRight');await expect(page.locator('[data-model="3"]')).toHaveAttribute('aria-selected','true');
+  await expect(page.locator('#model-book')).toHaveAttribute('data-book','gr-yaris');
+  await page.locator('#model-explore').click();await expect(page.locator('h1')).toHaveText('GR Yaris');
+  await page.evaluate(()=>document.fonts.ready);
+  const layout=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,wide:[...document.querySelectorAll('body *')].filter(el=>el.getBoundingClientRect().right>innerWidth+1).map(el=>({tag:el.tagName,cls:el.className,right:el.getBoundingClientRect().right})).slice(0,12)}));
+  expect(layout.scroll,JSON.stringify(layout)).toBeLessThanOrEqual(width);
+ }
+});
