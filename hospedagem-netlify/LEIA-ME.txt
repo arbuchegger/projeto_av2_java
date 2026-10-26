@@ -1,0 +1,11 @@
+PUBLICAR NO NETLIFY
+
+1. Acesse https://app.netlify.com/drop e entre na sua conta.
+2. Arraste a pasta hospedagem-netlify inteira para a área de publicação.
+3. O Netlify fornecerá o endereço público do site.
+
+Também é possível conectar o repositório GitHub. O netlify.toml na raiz já seleciona esta pasta; não é necessário comando de build.
+
+Esta é a versão estática: início, imagens, filtros, páginas dos quatro carros e cálculo ilustrativo. O catálogo é uma cópia dos preços Java na data de geração. Reservas e disponibilidade exigem hospedagem separada para o servidor Java; não funcionam no Netlify e não são confirmadas nesta versão.
+
+Ao modificar o site original, atualize também esta pasta antes de publicar.

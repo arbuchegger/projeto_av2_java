@@ -184,3 +184,7 @@ A marca **RANCING EXPERIENCE** mantém a grafia solicitada, logo original e iden
 O sistema **registra reservas funcionais dentro do projeto**, sem pagamento, emissão de contrato ou contratação de uma experiência real. Os preços são demonstrativos; não há vínculo oficial com marcas ou autódromo. Uma operação comercial exigiria autorização do local, condições de segurança e seguro, atendimento, autenticação com recuperação de conta, infraestrutura HTTPS e pagamento.
 
 Agora o site depende do servidor Java: **GitHub Pages ou abrir index.html diretamente não executa o backend**. O GitHub armazena o código; uma publicação online precisa de hospedagem com suporte ao Java e armazenamento persistente para `data/`.
+
+## Publicar no Netlify
+
+Arraste a pasta `hospedagem-netlify` para https://app.netlify.com/drop. Ela contém a versão estática completa e instruções em `LEIA-ME.txt`. Ao conectar este repositório, o `netlify.toml` da raiz define a pasta de publicação, sem build. As páginas e o catálogo funcionam; reservas e disponibilidade precisam do servidor Java em outra hospedagem. A pasta é uma cópia de publicação e precisa ser atualizada quando o site mudar.
